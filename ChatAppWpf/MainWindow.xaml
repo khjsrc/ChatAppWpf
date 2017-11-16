@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatAppWpf"
         mc:Ignorable="d"
-        Title="Chat App" Height="350" Width="525" Background="#ff303030" MinWidth="525" MinHeight="350">
+        Title="Chat App" Height="350" Width="525" Background="#ff303030" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True" Icon="thonk.png">
     <Grid MinHeight="300" MinWidth="500">
+        <!--<DataGrid>
+            <DataGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="#484848"></Setter></Style></DataGrid.Resources></DataGrid>-->
         <TextBlock Name="TextBlockChat" Margin="10,10,10,40" Background="#484848" Foreground="AntiqueWhite" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></TextBlock>
-        <Button Name="ButtonSendMessage" Height="20" Width="90" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,11" Foreground="Bisque" Background="Black" ClickMode="Release" Content="Send" FontFamily="Comic Sans MS"/>
-        <TextBox Name="TextBoxMessage" Height="22" Margin="10,0,110,10" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="AntiqueWhite" Background="#484848"></TextBox>
+        <Button Name="ButtonSendMessage" Height="20" Width="90" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,11" Foreground="Bisque" Background="Black" ClickMode="Release" Content="Send" FontFamily="Comic Sans MS" Click="ButtonSendMessage_Click"/>
+        <TextBox Name="TextBoxMessage" Height="22" Margin="10,0,110,10" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="AntiqueWhite" Background="#484848" Text="Input your message here..." GotFocus="TextBoxMessage_GotFocus" KeyDown="TextBoxMessage_KeyDown" LostFocus="TextBoxMessage_LostFocus"></TextBox>
     </Grid>
 </Window>
