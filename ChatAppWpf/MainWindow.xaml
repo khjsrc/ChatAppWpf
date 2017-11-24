@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatAppWpf"
         mc:Ignorable="d"
-        Title="Chat App" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True" Icon="thonk.png">
+        Title="Chat App" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True">
     <Window.Background>
         <LinearGradientBrush>
             <LinearGradientBrush.GradientStops>

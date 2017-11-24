@@ -23,6 +23,7 @@ namespace ChatAppWpf
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void ButtonSendMessage_Click(object sender, RoutedEventArgs e)
@@ -32,7 +33,7 @@ namespace ChatAppWpf
 
         private void TextBoxMessage_GotFocus(object sender, RoutedEventArgs e)
         {
-            if(TextBoxMessage.Text == "Input your message here...")
+            if (TextBoxMessage.Text == "Input your message here...")
             {
                 TextBoxMessage.Clear();
             }
@@ -40,16 +41,23 @@ namespace ChatAppWpf
 
         private void TextBoxMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter && TextBoxMessage.Text.Length > 0)
+            if (e.Key == Key.Enter && TextBoxMessage.Text.Length > 0)
             {
-                TextBlockChat.Text += TextBoxMessage.Text + '\n';
-                TextBoxMessage.Clear();
+                if (TextBoxMessage.Text.Trim(' ').Length == 0)
+                {
+                    TextBoxMessage.Clear();
+                }
+                else
+                {
+                    TextBlockChat.Text += TextBoxMessage.Text + '\n';
+                    TextBoxMessage.Clear();
+                }
             }
         }
 
         private void TextBoxMessage_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(TextBoxMessage.Text == string.Empty || TextBoxMessage.Text.Length == 0)
+            if (TextBoxMessage.Text == string.Empty || TextBoxMessage.Text.Length == 0)
             {
                 TextBoxMessage.Text = "Input your message here...";
             }
