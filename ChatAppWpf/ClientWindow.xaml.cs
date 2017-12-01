@@ -18,9 +18,9 @@ namespace ChatAppWpf
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ClientWindow : Window
     {
-        public MainWindow()
+        public ClientWindow()
         {
             InitializeComponent();
 
