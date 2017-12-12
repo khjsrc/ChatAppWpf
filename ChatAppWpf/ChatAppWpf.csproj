@@ -80,6 +80,14 @@
     <Compile Include="StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowControlScripts\ControlDoubleClickBehavior.cs" />
+    <Compile Include="WindowControlScripts\ShowSystemMenuBehavior.cs" />
+    <Compile Include="WindowControlScripts\SystemMenuManager.cs" />
+    <Compile Include="WindowControlScripts\WindowCloseCommand.cs" />
+    <Compile Include="WindowControlScripts\WindowDragBehavior.cs" />
+    <Compile Include="WindowControlScripts\WindowMaximizeCommand.cs" />
+    <Compile Include="WindowControlScripts\WindowMinimizeCommand.cs" />
+    <Compile Include="WindowControlScripts\WindowResizeBehavior.cs" />
     <Page Include="ClientWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +134,7 @@
   <ItemGroup>
     <None Include="Resources\thonk.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

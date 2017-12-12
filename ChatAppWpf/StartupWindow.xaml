@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatAppWpf"
         mc:Ignorable="d"
-        Title="Chat App" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True">
+        Height="350" Width="525" 
+        Style="{StaticResource CustomWindowStyle}"
+        Template="{StaticResource WindowBorderControlTemplate}">
     <Window.Background>
         <SolidColorBrush Color="#303030">
         </SolidColorBrush>
     </Window.Background>
     <Grid>
-        <TextBlock x:Name="TextBlockAnnouncement" Height="50" Width="505" Background="Transparent" Foreground="Bisque" Margin="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="Choose your side." FontFamily="Papyrus" FontSize="32" TextAlignment="Center"/>
-        <Button x:Name="ButtonServer" Height="25" Width="120" Background="#505050" Foreground="Bisque" Margin="30,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Server" FontFamily="Comic Sans MS" Click="ButtonServer_Click" FontSize="14"/>
-        <Button x:Name="ButtonClient" Height="25" Width="120" Background="#505050" Foreground="Bisque" Margin="0,0,30,30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Client" FontFamily="Comic Sans MS" Click="ButtonClient_Click" FontSize="14"/>
+        <TextBlock x:Name="TextBlockAnnouncement" Height="50" Width="505" Background="Transparent" Foreground="#b0800c" Margin="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="Choose your side." FontFamily="Papyrus" FontSize="32" TextAlignment="Center"/>
+        <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonServer" Height="25" Width="120" Margin="30,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Server" Click="ButtonServer_Click" FontSize="14"/>
+        <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonClient" Height="25" Width="120" Margin="0,0,30,30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Client" Click="ButtonClient_Click" FontSize="14"/>
     </Grid>
 </Window>

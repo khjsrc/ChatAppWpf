@@ -5,28 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatAppWpf"
         mc:Ignorable="d"
-        Title="Chat App" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True">
-    <Window.Background>
+        Height="350" Width="525"
+        Style="{StaticResource CustomWindowStyle}"
+        Template="{StaticResource WindowBorderControlTemplate}">
+    <!--<Window.Background>
         <LinearGradientBrush>
             <LinearGradientBrush.GradientStops>
-                <!-- no explicit new GradientStopCollection, parser knows how to find or create -->
+                --><!-- no explicit new GradientStopCollection, parser knows how to find or create --><!--
                 <GradientStop Offset="0.0" Color="Yellow" />
                 <GradientStop Offset="0.3" Color="Orange" />
                 <GradientStop Offset="0.6" Color="Red" />
                 <GradientStop Offset="1.0" Color="Yellow" />
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
-    </Window.Background>
+    </Window.Background>-->
     <Grid MinHeight="300" MinWidth="500">
-        <TextBlock Name="TextBlockChat" Margin="10,10,10,40" Background="#484848" Foreground="AntiqueWhite" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <Button Name="ButtonSendMessage" Height="20" Width="90" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,11" Background="Black" Foreground="Bisque" ClickMode="Release" Content="Send" FontFamily="Comic Sans MS" Click="ButtonSendMessage_Click">
-            <!--<Button.Background>
-                <ImageBrush ImageSource="thonk.png"></ImageBrush>
-            </Button.Background>
-            <Button.Foreground>
-                <SolidColorBrush Color="Black"></SolidColorBrush>
-            </Button.Foreground>-->
-            </Button>
-            <TextBox Name="TextBoxMessage" Height="22" Margin="10,0,110,10" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="AntiqueWhite" Background="#484848" Text="Input your message here..." GotFocus="TextBoxMessage_GotFocus" KeyDown="TextBoxMessage_KeyDown" LostFocus="TextBoxMessage_LostFocus"></TextBox>
+        <ScrollViewer x:Name="ChatLog" Margin="10,10,10,45" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"></ScrollViewer>
+        <Button Style="{StaticResource ButtonDefaultStyle}" Name="ButtonSendMessage" Height="22" Width="90" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" ClickMode="Release" Content="Send" Click="ButtonSendMessage_Click"></Button>
+            <TextBox Name="TextBoxMessage" Height="22" Margin="10,0,110,10" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="Bisque" BorderThickness="0" Background="#484848" Text="Input your message here..." GotFocus="TextBoxMessage_GotFocus" KeyDown="TextBoxMessage_KeyDown" LostFocus="TextBoxMessage_LostFocus"></TextBox>
     </Grid>
 </Window>

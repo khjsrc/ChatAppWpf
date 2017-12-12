@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatAppWpf"
         mc:Ignorable="d"
-        Title="ServerWindow" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False">
+        Title="ServerWindow" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False"
+        Style="{StaticResource CustomWindowStyle}"
+        Template="{StaticResource WindowBorderControlTemplate}">
     <Window.Background>
         <SolidColorBrush Color="#303030"></SolidColorBrush>
     </Window.Background>
     <Grid>
-        <TextBlock x:Name="ServerLog" Height="290" Width="505" Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="10">
-            <ScrollBar Height="290" HorizontalAlignment="Right" VerticalAlignment="Stretch"></ScrollBar>
-        </TextBlock>
-        <Button x:Name="ButtonExit" Height="30" Width="100" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="#484848" Foreground="Bisque" Content="Exit" FontFamily="Comic Sans MS" FontSize="16" Click="ButtonExit_Click"></Button>
+        <ScrollViewer x:Name="ChatLog" Height="265" Width="505" Margin="10,-40,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
+        </ScrollViewer>
+        <!--<TextBlock x:Name="ServerLog" Height="290" Width="505" Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="10">
+            <ScrollBar Style="{StaticResource CustomScrollBarStyle}" Margin="0,0,0,0"></ScrollBar>
+        </TextBlock>-->
+        <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonExit" Height="30" Width="100" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Exit" FontSize="16" Click="ButtonExit_Click"></Button>
     </Grid>
 </Window>

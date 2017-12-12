@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -19,12 +18,11 @@ namespace ChatAppWpf
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class ClientWindow : Window
+    public partial class MainWindow : Window
     {
-        public ClientWindow()
+        public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void ButtonSendMessage_Click(object sender, RoutedEventArgs e)
@@ -34,7 +32,7 @@ namespace ChatAppWpf
 
         private void TextBoxMessage_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (TextBoxMessage.Text == "Input your message here...")
+            if(TextBoxMessage.Text == "Input your message here...")
             {
                 TextBoxMessage.Clear();
             }
@@ -42,24 +40,20 @@ namespace ChatAppWpf
 
         private void TextBoxMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && TextBoxMessage.Text.Length > 0)
+            if(e.Key == Key.Enter && TextBoxMessage.Text.Length > 0)
             {
-                if (TextBoxMessage.Text.Trim(' ').Length == 0)
+                if (TextBoxMessage.Text.Trim(' ').Length > 0)
                 {
+                    TextBlockChat.Text += TextBoxMessage.Text + '\n';
                     TextBoxMessage.Clear();
                 }
-                else
-                {
-                    ChatLog.Content += TextBoxMessage.Text + '\n';
-                    ChatLog.ScrollToBottom();
-                    TextBoxMessage.Clear();
-                }
+                else TextBoxMessage.Clear();
             }
         }
 
         private void TextBoxMessage_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (TextBoxMessage.Text == string.Empty || TextBoxMessage.Text.Length == 0)
+            if(TextBoxMessage.Text == string.Empty || TextBoxMessage.Text.Length == 0)
             {
                 TextBoxMessage.Text = "Input your message here...";
             }
