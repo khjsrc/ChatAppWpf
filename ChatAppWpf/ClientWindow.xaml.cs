@@ -24,7 +24,6 @@ namespace ChatAppWpf
         public ClientWindow()
         {
             InitializeComponent();
-
         }
 
         private void ButtonSendMessage_Click(object sender, RoutedEventArgs e)
