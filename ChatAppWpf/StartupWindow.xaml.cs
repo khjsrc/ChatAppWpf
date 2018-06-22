@@ -41,5 +41,29 @@ namespace ChatAppWpf
             win.Show();
             this.Close();
         }
+
+        private void ButtonLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            string login = LoginTextBox.Text;
+            var password = UserPassword.Password;
+
+            //send the login-password pair to the server? then receive the answer and if the password matches the login, open the client window
+
+            ClientWindow win = new ClientWindow();
+            win.Left = this.Left;
+            win.Top = this.Top;
+            win.Show();
+            this.Close();
+        }
+
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void UserPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter) ButtonLogIn_Click(sender, e);
+        }
     }
 }

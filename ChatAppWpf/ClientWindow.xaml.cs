@@ -49,7 +49,22 @@ namespace ChatAppWpf
                 }
                 else
                 {
-                    ChatLog.Content += TextBoxMessage.Text + '\n';
+                    string message = string.Empty;
+                    int lastIndexOfSpace, previousIndexOfSpace = 0;
+                    for (int i = 0; i < TextBoxMessage.Text.Length / 50; i++)
+                    {
+                        try
+                        {
+                            lastIndexOfSpace = TextBoxMessage.Text.ToString().LastIndexOf(' ', previousIndexOfSpace + 1, 50);
+                            message += TextBoxMessage.Text.Substring(previousIndexOfSpace, lastIndexOfSpace - message.Length) + '\n';
+                            previousIndexOfSpace = lastIndexOfSpace;
+                        }
+                        catch (Exception)
+                        {
+                            message = TextBoxMessage.Text;
+                        }
+                    }
+                    ChatLog.Content += message + '\n';
                     ChatLog.ScrollToBottom();
                     TextBoxMessage.Clear();
                 }

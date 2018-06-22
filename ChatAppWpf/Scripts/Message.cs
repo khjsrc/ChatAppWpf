@@ -13,7 +13,7 @@ namespace ChatApp
 
         public string Content { get; set; }
         public ulong ID { get; set; }
-        public User Sender { get; set; }
+        public User Author { get; set; }
 
         //public Message(string _message)
         //{
@@ -25,7 +25,7 @@ namespace ChatApp
         {
             ID = MessagesAmount++;
             Content = _message;
-            Sender = new User(_userName, 0);
+            Author = new User(_userName, 0);
         }
 
         public byte[] GetBytes()
