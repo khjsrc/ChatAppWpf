@@ -24,7 +24,7 @@
         <sw:WindowMaximizeCommand x:Key="MaximizeCommand"></sw:WindowMaximizeCommand>
         <sw:WindowCloseCommand x:Key="CloseCommand"></sw:WindowCloseCommand>
 
-        <Style x:Key="CustomTextStyle" TargetType="{x:Type TextBlock}">
+        <Style x:Key="CustomTextBlockStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Papyrus"/>
             <Setter Property="Foreground" Value="#88ffffff"/>
             <Setter Property="Background" Value="Transparent"/>
