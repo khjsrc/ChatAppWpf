@@ -12,13 +12,7 @@
         <SolidColorBrush Color="#303030"></SolidColorBrush>
     </Window.Background>
     <Grid>
-        <Button>
-            <Path Fill="DarkGreen" 
-                  Data="M 30 100 Q 6 102 15 80
-                  L 45 15 Q 50 8 55 15 
-                  L 85 80 Q 94 102 70 100 Z" 
-                  Stretch="None"></Path>
-        </Button>
+        <Button Content="M 0 4 L 4 8 L 4 0 Z"/>
         <!--<ScrollViewer x:Name="ChatLog" Height="265" Width="505" Margin="10,-40,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
         </ScrollViewer>
         <TextBlock x:Name="ServerLog" Height="290" Width="505" Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="10">
