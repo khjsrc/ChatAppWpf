@@ -38,7 +38,7 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="20"/>
         </Style>
-        
+
         <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
             <!--Window style-->
             <Setter Property="WindowStyle" Value="None"></Setter>
@@ -304,8 +304,13 @@
                 <RepeatButton Grid.Row="0"
                               Style="{StaticResource ScrollBarLineButton}"
                               Height="Auto"
-                              Command="ScrollBar.LineUpCommand"
-                              Content="M 0,4 L 8,4 L 0,4 Z"/>
+                              Command="ScrollBar.LineUpCommand">
+                    <Path Fill="#80343434"
+                          Data="M 20,100 Q -5,100 5,80
+                          L 35,15 Q 40,6 45,15 
+                          L 75,80 Q 85,100 60,100 Z" 
+                          Stretch="None"></Path>
+                </RepeatButton>
                 <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
                     <Track.DecreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}"
