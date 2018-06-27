@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
         <ScrollViewer Grid.Row="0" x:Name="ChatLog" Background="Transparent" Foreground="#99ffffff" CanContentScroll="False" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
-            <ScrollBar HorizontalAlignment="Right" Background="#FF555555" Foreground="#FF222222" MinWidth="11" Width="11"/>
+            <ScrollBar Style="{StaticResource {x:Type ScrollBar}}" Orientation="Vertical" HorizontalAlignment="Right" Width="16" Opacity="0.75"/>
         </ScrollViewer>
         <!--<Button Style="{StaticResource ButtonDefaultStyle}" Name="ButtonSendMessage" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,0" ClickMode="Release" Content="Send" Click="ButtonSendMessage_Click"></Button>-->
         <TextBox Grid.Row="1" Style="{StaticResource CustomTextBoxStyle}" Name="TextBoxMessage" Height="Auto" Text="Input your message here..." GotFocus="TextBoxMessage_GotFocus" KeyDown="TextBoxMessage_KeyDown" LostFocus="TextBoxMessage_LostFocus"></TextBox>

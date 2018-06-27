@@ -7,6 +7,15 @@
     <Application.Resources>
         <!--These resources are for global use, i.e. for the whole application.-->
 
+        <Color x:Key="WindowBackground">#ff343434</Color>
+        <Color x:Key="ScrollBarButton">#ff242424</Color>
+        <Color x:Key="ButtonBorderLightColor">#ffffffff</Color>
+        <Color x:Key="ButtonBorderDarkColor">#ff151515</Color>
+        <Color x:Key="ScrollBarThumbColor">#ff242424</Color>
+        <Color x:Key="DisabledForegroundColor">#ff999999</Color>
+        <Color x:Key="ControlPressedColor">#ffff00</Color>
+        <Color x:Key="TextColor">#88ffffff</Color>
+
         <SolidColorBrush x:Key="WindowColor" Color="#363636"/>
         <SolidColorBrush x:Key="WindowBackColor" Color="#363636"/>
         <SolidColorBrush x:Key="WindowForeColor" Color="#000000"/>
@@ -81,6 +90,36 @@
             </Setter>
         </Style>
 
+        <Style x:Key="WindowExitButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+                                <Setter Property="Foreground" Value="{StaticResource WindowColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#80ff0000"/>
+                                <Setter Property="Foreground" Value="{StaticResource WindowForeHighlightColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#ffff0000"/>
+                                <Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="ButtonDefaultStyle" TargetType="{x:Type Button}">
             <!--Buttons style with click behaviour.-->
             <Setter Property="Background" Value="#484848"></Setter>
@@ -121,10 +160,10 @@
             <Grid>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Stretch" Background="{StaticResource WindowBackColor}">
+                    <Grid Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource WindowBackColor}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="25"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -152,9 +191,16 @@
                                sw:ShowSystemMenuBehavior.RightButtonShow="true">
                         </Label>
                         <StackPanel Grid.Column="2" Orientation="Horizontal">
-                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">_</Button>
-                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">🗔</Button>
-                            <Button DockPanel.Dock="Right"  Style="{StaticResource WindowButton}" Command="{StaticResource CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" FontWeight="Bold">❌</Button>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <!--<Path Data="M 0,10 15,10 15,8 0,8 Z" Fill="#88ffffff" Margin="0,0,0,5"/>-->
+                                <Path Data="M 2,10 10,10 Z" Stroke="#88ffffff" StrokeThickness="2" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,13,0,5"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Visibility="Hidden" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Path Data="M 7,10 1,10 1,6 7,6 Z M 3,6 3,3 9,3 9,7 7,7 7,6 Z" Stroke="#88ffffff" Width="Auto" Height="Auto" StrokeThickness="1"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowExitButton}" Command="{StaticResource CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Path Data="M 2,2 8,8 Z M 2,8 8,2 Z" Stroke="#88ffffff" StrokeThickness="2" Stretch="Uniform" Margin="8,8,8,13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                     <Border Grid.Row="1" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
@@ -192,7 +238,7 @@
             <Grid>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Stretch" Background="{StaticResource WindowBackColor}">
@@ -223,9 +269,19 @@
                                sw:ShowSystemMenuBehavior.RightButtonShow="true">
                         </Label>
                         <StackPanel Grid.Column="2" Orientation="Horizontal">
-                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">_</Button>
-                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">🗔</Button>
-                            <Button DockPanel.Dock="Right"  Style="{StaticResource WindowButton}" Command="{StaticResource CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" FontWeight="Bold">❌</Button>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Path Data="M 0,10 15,10 15,8 0,8 Z" 
+                                      Fill="#88ffffff"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Path Data="M 7,10 1,10 1,5 7,5 Z 
+                                      M 3,5 3,2 9,2 9,7 7,7 7,5 Z"
+                                      Stroke="#88ffffff" Width="Auto" Height="Auto" StrokeThickness="1"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource WindowExitButton}" Command="{StaticResource CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Path Data="M 2,2 8,8 Z M 2,8 8,2 Z" 
+                                      Stroke="#88ffffff"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                     <Border Grid.Row="1" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
@@ -264,7 +320,50 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border Name="RootElement" Background="Transparent" BorderThickness="0"></Border>
+                        <Border x:Name="Border" Margin="1" CornerRadius="2" BorderThickness="0">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Color="{DynamicResource ButtonBorderLightColor}" Offset="0.0"/>
+                                        <GradientStop Color="{DynamicResource ButtonBorderDarkColor}" Offset="1.0"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                  Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow"
+                                                                  Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                                             Value="{DynamicResource DisabledForegroundColor}"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Path x:Name="Arrow"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M 20,100 Q -5,100 5,80
+                                      L 35,15 Q 40,6 45,15 
+                                      L 75,80 Q 85,100 60,100 Z"
+                                  Stretch="Uniform">
+                                <Path.Fill>
+                                    <SolidColorBrush Color="#999999"/>
+                                </Path.Fill>
+                            </Path>
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -288,7 +387,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border Background="Black"/>
+                        <Border Background="White"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -297,28 +396,64 @@
         <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10" MaxHeight="15"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="10" MaxHeight="15"/>
+                    <RowDefinition Height="*" MaxHeight="18"/>
+                    <RowDefinition Height="0.0001*"/>
+                    <RowDefinition Height="*" MaxHeight="18"/>
                 </Grid.RowDefinitions>
                 <RepeatButton Grid.Row="0"
                               Style="{StaticResource ScrollBarLineButton}"
-                              Height="Auto"
                               Command="ScrollBar.LineUpCommand">
-                    <Path Fill="#80343434"
-                          Data="M 20,100 Q -5,100 5,80
-                          L 35,15 Q 40,6 45,15 
-                          L 75,80 Q 85,100 60,100 Z" 
-                          Stretch="None"></Path>
                 </RepeatButton>
                 <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
                     <Track.DecreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}"
                                       Command="ScrollBar.PageUpCommand"/>
                     </Track.DecreaseRepeatButton>
-                    <!--Stopped here. To find out: does ',' in RepeatButton.Content make any sense and can/should I remove them?-->
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" Margin="1,0,1,0">
+                            <Thumb.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Color="Red" Offset="0.0"/>
+                                        <GradientStop Color="#ffff00" Offset="1.0"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.BorderBrush>
+                            <Thumb.Background>
+                                <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Color="#ffffff" Offset="0.0"/>
+                                        <GradientStop Color="#ffff00" Offset="0.5"/>
+                                        <GradientStop Color="#ff0000" Offset="1.0"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.Background>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButton}"/>
+                    </Track.IncreaseRepeatButton>
                 </Track>
+                <RepeatButton Grid.Row="3"
+                              Style="{StaticResource ScrollBarLineButton}"
+                              Height="Auto"
+                              Command="ScrollBar.LineDownCommand">
+                </RepeatButton>
             </Grid>
         </ControlTemplate>
+
+        <!--Placeholder for vertical ScrollBar-->
+
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="18"/>
+                    <Setter Property="Height" Value="Auto"/>
+                    <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>
