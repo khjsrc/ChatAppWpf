@@ -270,17 +270,15 @@
                         </Label>
                         <StackPanel Grid.Column="2" Orientation="Horizontal">
                             <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
-                                <Path Data="M 0,10 15,10 15,8 0,8 Z" 
-                                      Fill="#88ffffff"/>
+                                <Path Data="M 2,10 10,10 Z" Stroke="#88ffffff" StrokeThickness="2" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,13,0,5"/>
                             </Button>
                             <Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
                                 <Path Data="M 7,10 1,10 1,5 7,5 Z 
                                       M 3,5 3,2 9,2 9,7 7,7 7,5 Z"
-                                      Stroke="#88ffffff" Width="Auto" Height="Auto" StrokeThickness="1"/>
+                                      Stroke="#88ffffff" Width="Auto" Height="Auto" StrokeThickness="1" Stretch="Uniform" Margin="3,3,3,7"/>
                             </Button>
                             <Button DockPanel.Dock="Right" Style="{StaticResource WindowExitButton}" Command="{StaticResource CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
-                                <Path Data="M 2,2 8,8 Z M 2,8 8,2 Z" 
-                                      Stroke="#88ffffff"/>
+                                <Path Data="M 2,2 8,8 Z M 2,8 8,2 Z" Stroke="#88ffffff" StrokeThickness="2" Stretch="Uniform" Margin="8,8,8,13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                         </StackPanel>
                     </Grid>
