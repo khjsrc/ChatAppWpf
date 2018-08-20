@@ -12,7 +12,7 @@ namespace ChatApp
     class ServerEngine
     {
         public event Func<Message, Task> OnMessageReceived;
-        public event Func<Task> OnClientConnected;
+        public event EventHandler OnClientConnected;
 
         internal TcpListener _Server;
         internal List<TcpClient> _Clients = new List<TcpClient>();

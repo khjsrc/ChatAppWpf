@@ -12,9 +12,9 @@
         <SolidColorBrush Color="#303030"></SolidColorBrush>
     </Window.Background>
     <Grid>
-         <Button Background="Transparent">
+        <Button Background="Transparent">
             <Path Data="M 50,0 85,15 100,50 85,85 50,100 15,85 0,50 15,15 Z" 
-                   Stretch="Uniform ">
+                   Stretch="Uniform">
                 <Path.Fill>
                     <LinearGradientBrush StartPoint="0.5,1" EndPoint=".5,0">
                         <GradientStop Offset="0.16" Color="#303030"/>
@@ -25,10 +25,14 @@
                 </Path.Fill>
             </Path>
         </Button>
-        <Button>
-            <Path Data="M 0,0 20,20 Z"/>
+        <Button  x:Name="ButtonConnectToServer" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="Transparent" Click="ButtonConnectToServer_OnClick">
+            <Path Stretch="None" Data = "M 0,0 0,50 100,50 Z" Fill="DarkSlateGray">
+            </Path>
         </Button>
-        <!--<ScrollViewer x:Name="ChatLog" Height="265" Width="505" Margin="10,-40,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
+        <Button x:Name="StartServerButton" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="StartServerButton_OnClick">
+            <Path Data="M 0,0 100,0 100,50 Z" Fill="Aquamarine"></Path>
+        </Button>
+            <!--<ScrollViewer x:Name="ChatLog" Height="265" Width="505" Margin="10,-40,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
         </ScrollViewer>
         <TextBlock x:Name="ServerLog" Height="290" Width="505" Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="10">
             <ScrollBar Style="{StaticResource CustomScrollBarStyle}" Margin="0,0,0,0"></ScrollBar>

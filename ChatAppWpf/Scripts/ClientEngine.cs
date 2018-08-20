@@ -46,16 +46,16 @@ namespace ChatApp
 
         public async Task ReceiveMessageAsync()
         {
-            NetworkStream NetStream = Server.GetStream();
+            NetworkStream networkStream = Server.GetStream();
             while (true)
             {
-                if (NetStream.DataAvailable)
+                if (networkStream.DataAvailable)
                 {
-                    string[] infoPacket = await ReceiveInfoPacketAsync(NetStream);
+                    string[] infoPacket = await ReceiveInfoPacketAsync(networkStream);
                     byte[] data = new byte[Convert.ToInt32(infoPacket[1])];
-                    await NetStream.ReadAsync(data, 0, data.Length);
-                    Message ReceivedMessage = new Message(Encoding.UTF8.GetString(data, 0, data.Length), infoPacket[0]);
-                    await OnMessageReceived(ReceivedMessage);
+                    await networkStream.ReadAsync(data, 0, data.Length);
+                    Message receivedMessage = new Message(Encoding.UTF8.GetString(data, 0, data.Length), infoPacket[0]);
+                    if(OnMessageReceived != null) await OnMessageReceived(receivedMessage);
                 }
             }
         }

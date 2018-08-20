@@ -17,6 +17,7 @@ namespace ChatAppWpf
     /// <summary>
     /// Логика взаимодействия для StartupWindow.xaml
     /// </summary>
+    /// <inheritdoc cref="Window"/>
     public partial class StartupWindow : Window
     {
         public StartupWindow()
@@ -58,7 +59,12 @@ namespace ChatAppWpf
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            //Environment.Exit(0);
+            ServerWindow win = new ServerWindow();
+            win.Left = this.Left;
+            win.Top = this.Top;
+            win.Show();
+            this.Close();
         }
 
         private void UserPassword_KeyDown(object sender, KeyEventArgs e)
