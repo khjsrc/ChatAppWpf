@@ -54,8 +54,8 @@
             <Setter Property="AllowsTransparency" Value="True"></Setter>
             <Setter Property="MinWidth" Value="525"></Setter>
             <Setter Property="MinHeight" Value="350"></Setter>
-            <Setter Property="Background" Value="#484848"></Setter>
-            <Setter Property="BorderBrush" Value="#303030"></Setter>
+            <Setter Property="Background" Value="#303030"></Setter>
+            <Setter Property="BorderBrush" Value="#202020"></Setter>
             <Setter Property="BorderThickness" Value="0"></Setter>
             <Setter Property="ResizeMode" Value="CanResize"></Setter>
         </Style>

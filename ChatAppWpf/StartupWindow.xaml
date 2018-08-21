@@ -8,10 +8,6 @@
         Height="360" Width="525" 
         Style="{StaticResource CustomWindowStyle}"
         Template="{StaticResource WindowBorderControlTemplate}">
-    <Window.Background>
-        <SolidColorBrush Color="#303030">
-        </SolidColorBrush>
-    </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"></RowDefinition>

@@ -14,21 +14,21 @@ namespace ChatApp
         public event EventHandler<Message> OnMessageReceived;
         public event EventHandler OnClientConnected;
 
-        internal TcpListener _Server;
-        internal List<TcpClient> _Clients = new List<TcpClient>();
-        internal List<NetworkStream> _Streams = new List<NetworkStream>();
+        internal TcpListener Server;
+        internal List<TcpClient> Clients = new List<TcpClient>();
+        internal List<NetworkStream> Streams = new List<NetworkStream>();
 
 
         internal Message MOTD { get; set; }
 
         public ServerEngine(int port)
         {
-            _Server = TcpListener.Create(port);
+            Server = TcpListener.Create(port);
         }
 
         public async Task StartAsync()
         {
-            _Server.Start();
+            Server.Start();
             while (true)
             {
                 await AcceptPendingConnectionsAsync();
@@ -39,9 +39,9 @@ namespace ChatApp
 
         public async Task AcceptPendingConnectionsAsync()
         {
-            if (_Server.Pending())
+            if (Server.Pending())
             {
-                _Clients.Add(await _Server.AcceptTcpClientAsync());
+                Clients.Add(await Server.AcceptTcpClientAsync());
                 OnClientConnected?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -49,14 +49,14 @@ namespace ChatApp
         public async Task GreetNewcomerAsync()
         {
             var motdBytes = MOTD.GetBytes();
-            var client = _Clients.Last();
+            var client = Clients.Last();
             await client.GetStream().WriteAsync(motdBytes, 0, motdBytes.Length);
         }
 
         public async Task BroadcastAsync(Message msg)
         {
             var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
-            foreach (var client in _Clients)
+            foreach (var client in Clients)
             {
                 NetworkStream stream = client.GetStream();
                 await SendInfoPacketAsync(client, msg);
@@ -75,9 +75,9 @@ namespace ChatApp
         public async Task ReceiveMessageAsync()
         {
             //Console.WriteLine($"Connected clients: {_Clients.Count}"); //debugging thingy
-            if (_Clients.Count > 0)
+            if (Clients.Count > 0)
             {
-                foreach (var client in _Clients)
+                foreach (var client in Clients)
                 {
                     NetworkStream stream = client.GetStream();
                     if (client.GetStream().DataAvailable)

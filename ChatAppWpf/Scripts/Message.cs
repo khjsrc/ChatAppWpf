@@ -21,11 +21,11 @@ namespace ChatApp
         //    Content = _message;
         //}
 
-        public Message(string _message, string _userName)
+        public Message(string message, string username)
         {
             ID = MessagesAmount++;
-            Content = _message;
-            Author = new User(_userName, 0);
+            Content = message;
+            Author = new User(username);
         }
 
         public byte[] GetBytes()

@@ -15,23 +15,23 @@ namespace ChatApp
         public event EventHandler OnConnectedToServer;
 
         private static ClientEngine _clientEngine;
-        private static TcpClient _Client;
-        private static readonly object padlock = new object();
+        private static TcpClient _client;
+        private static readonly object Padlock = new object();
 
         ClientEngine()
         {
 
         }
 
-        public static ClientEngine Client
+        public static ClientEngine Client //Singleton pattern kek. padlock works like lock checker - if it's not in use, the code inside works just fine, (?) otherwise it waits till padlock is free
         {
             get
             {
-                lock (padlock)
+                lock (Padlock)
                 {
-                    if(_Client == null)
+                    if(_client == null)
                     {
-                        _Client = new TcpClient(AddressFamily.InterNetwork);
+                        _client = new TcpClient(AddressFamily.InterNetwork);
                         _clientEngine = new ClientEngine();
                     }
                     return _clientEngine;
@@ -42,27 +42,24 @@ namespace ChatApp
         #region Task methods
         public async Task Connect(IPAddress address, int port)
         {
-            while (!_Client.Connected)
+            while (!_client.Connected)
             {
-                await _Client.ConnectAsync(address, port);
+                await _client.ConnectAsync(address, port);
                 await Task.Delay(1000);
             }
-            if (OnConnectedToServer != null)
-            {
-                OnConnectedToServer?.Invoke(this, EventArgs.Empty);
-            }
+            OnConnectedToServer?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task SendMessageAsync(Message msg)
         {
             byte[] msgBytes = Encoding.UTF8.GetBytes(msg.Content);
             await SendInfoPacketAsync(msg);
-            await _Client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
+            await _client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
         }
 
         public async Task ReceiveMessageAsync()
         {
-            NetworkStream networkStream = _Client.GetStream();
+            NetworkStream networkStream = _client.GetStream();
             while (true)
             {
                 if (networkStream.DataAvailable)
@@ -81,7 +78,7 @@ namespace ChatApp
             byte[] infoBytes = new byte[40]; //32 bytes for nickname and other 8 for additional stuff.
             Encoding.UTF8.GetBytes(msg.Author.UserName).CopyTo(infoBytes, 0);
             Encoding.UTF8.GetBytes(msg.Content.Length.ToString()).CopyTo(infoBytes, 32); //first of last 8 bytes is message length.
-            await _Client.GetStream().WriteAsync(infoBytes, 0, 40);
+            await _client.GetStream().WriteAsync(infoBytes, 0, 40);
         }
 
         private async Task<string[]> ReceiveInfoPacketAsync(NetworkStream stream)

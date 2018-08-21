@@ -12,19 +12,17 @@ namespace ChatApp
         internal int ID { get; set; }
         public string UserName { get; set; }
         public DateTime RegistrationDay { get; set; }
-        public int Age { get; set; }
 
-        public User(string _name, int _age)
+        public User(string name)
         {
-            if (Encoding.UTF8.GetBytes(_name).Length <= 32)
+            if (Encoding.UTF8.GetBytes(name).Length <= 32)
             {
-                UserName = _name;
+                UserName = name;
             }
             else
             {
-                UserName = _name.Substring(0,32);
+                UserName = name.Substring(0,32);
             }
-            Age = _age;
             RegistrationDay = DateTime.Now;
         }
     }
