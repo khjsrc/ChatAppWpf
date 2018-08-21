@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ServerWindow" Height="350" Width="525" MinWidth="525" MinHeight="350" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False"
         Style="{StaticResource CustomWindowStyle}"
-        Template="{StaticResource WindowBorderControlTemplate}">
+        Template="{StaticResource WindowBorderControlTemplateResizeable}">
     <Window.Background>
         <SolidColorBrush Color="#303030"></SolidColorBrush>
     </Window.Background>
@@ -26,17 +26,19 @@
             </Path>
         </Button>
         <Button  x:Name="ButtonConnectToServer" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="Transparent" Click="ButtonConnectToServer_OnClick">
-            <Path Stretch="None" Data = "M 0,0 0,50 100,50 Z" Fill="DarkSlateGray">
-            </Path>
+            Connect to server 127.0.0.1
         </Button>
-        <Button x:Name="StartServerButton" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="StartServerButton_OnClick">
-            <Path Data="M 0,0 100,0 100,50 Z" Fill="Aquamarine"></Path>
+        <Button x:Name="StartServerButton" Margin="0,0,0,20 " Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="StartServerButton_OnClick">
+            Start Server
+        </Button>
+        <Button x:Name="SendMessageButton" Margin="146,0,0,0" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="SendMessageButton_OnClick">
+            Send Message
         </Button>
             <!--<ScrollViewer x:Name="ChatLog" Height="265" Width="505" Margin="10,-40,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="14" VerticalScrollBarVisibility="Auto">
         </ScrollViewer>
         <TextBlock x:Name="ServerLog" Height="290" Width="505" Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Foreground="Bisque" FontFamily="Papyrus" FontSize="10">
             <ScrollBar Style="{StaticResource CustomScrollBarStyle}" Margin="0,0,0,0"></ScrollBar>
         </TextBlock>-->
-        <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonExit" Height="30" Width="100" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Exit" FontSize="16" Click="ButtonExit_Click"></Button>
+        <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonExit" Height="30" Width="100" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Exit" FontSize="16" Click="ButtonExit_OnClick"></Button>
     </Grid>
 </Window>

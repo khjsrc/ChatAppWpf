@@ -11,42 +11,58 @@ namespace ChatApp
 {
     class ClientEngine
     {
-        public event Func<Message, Task> OnMessageReceived;
-        public event Func<Task> OnConnectedToServer;
+        public event EventHandler<Message> OnMessageReceived;
+        public event EventHandler OnConnectedToServer;
 
-        internal TcpClient Server;
+        private static ClientEngine _clientEngine;
+        private static TcpClient _Client;
+        private static readonly object padlock = new object();
 
-        public ClientEngine()
+        ClientEngine()
         {
-            Server = new TcpClient(AddressFamily.InterNetwork);
+
+        }
+
+        public static ClientEngine Client
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if(_Client == null)
+                    {
+                        _Client = new TcpClient(AddressFamily.InterNetwork);
+                        _clientEngine = new ClientEngine();
+                    }
+                    return _clientEngine;
+                }
+            }
         }
 
         #region Task methods
-        public async Task Connect(IPAddress address)
+        public async Task Connect(IPAddress address, int port)
         {
-            while (!Server.Connected)
+            while (!_Client.Connected)
             {
-                Console.WriteLine("Connecting to the server...");
-                await Server.ConnectAsync(address, 5813);
+                await _Client.ConnectAsync(address, port);
                 await Task.Delay(1000);
             }
             if (OnConnectedToServer != null)
             {
-                await OnConnectedToServer();
+                OnConnectedToServer?.Invoke(this, EventArgs.Empty);
             }
-            Console.Clear();
         }
 
         public async Task SendMessageAsync(Message msg)
         {
             byte[] msgBytes = Encoding.UTF8.GetBytes(msg.Content);
             await SendInfoPacketAsync(msg);
-            await Server.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
+            await _Client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
         }
 
         public async Task ReceiveMessageAsync()
         {
-            NetworkStream networkStream = Server.GetStream();
+            NetworkStream networkStream = _Client.GetStream();
             while (true)
             {
                 if (networkStream.DataAvailable)
@@ -55,20 +71,20 @@ namespace ChatApp
                     byte[] data = new byte[Convert.ToInt32(infoPacket[1])];
                     await networkStream.ReadAsync(data, 0, data.Length);
                     Message receivedMessage = new Message(Encoding.UTF8.GetString(data, 0, data.Length), infoPacket[0]);
-                    if(OnMessageReceived != null) await OnMessageReceived(receivedMessage);
+                    OnMessageReceived?.Invoke(this, receivedMessage);
                 }
             }
         }
 
-        public async Task SendInfoPacketAsync(Message msg)
+        private async Task SendInfoPacketAsync(Message msg)
         {
             byte[] infoBytes = new byte[40]; //32 bytes for nickname and other 8 for additional stuff.
             Encoding.UTF8.GetBytes(msg.Author.UserName).CopyTo(infoBytes, 0);
             Encoding.UTF8.GetBytes(msg.Content.Length.ToString()).CopyTo(infoBytes, 32); //first of last 8 bytes is message length.
-            await Server.GetStream().WriteAsync(infoBytes, 0, 40);
+            await _Client.GetStream().WriteAsync(infoBytes, 0, 40);
         }
 
-        public async Task<string[]> ReceiveInfoPacketAsync(NetworkStream stream)
+        private async Task<string[]> ReceiveInfoPacketAsync(NetworkStream stream)
         {
             byte[] receivedBytes = new byte[40];
             await stream.ReadAsync(receivedBytes, 0, 40);
@@ -76,13 +92,13 @@ namespace ChatApp
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
         }
 
-        public async Task DisplayMessage(Message msg)
-        {
-            if (msg.Author.UserName != Console.Title)
-            {
-                Console.WriteLine($"{msg.Author.UserName}: {msg.Content}");
-            }
-        }
+        //private async Task DisplayMessage(Message msg)
+        //{
+        //    if (msg.Author.UserName != Console.Title)
+        //    {
+        //        Console.WriteLine($"{msg.Author.UserName}: {msg.Content}");
+        //    }
+        //}
         #endregion
     }
 }

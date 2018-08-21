@@ -26,7 +26,7 @@ namespace ChatAppWpf
             InitializeComponent();
         }
 
-        private void ButtonSendMessage_Click(object sender, RoutedEventArgs e)
+        private void ButtonSendMessage_OnClick(object sender, RoutedEventArgs e)
         {
 
         }

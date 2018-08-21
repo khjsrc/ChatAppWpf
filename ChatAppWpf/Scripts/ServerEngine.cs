@@ -11,19 +11,19 @@ namespace ChatApp
 {
     class ServerEngine
     {
-        public event Func<Message, Task> OnMessageReceived;
+        public event EventHandler<Message> OnMessageReceived;
         public event EventHandler OnClientConnected;
 
         internal TcpListener _Server;
         internal List<TcpClient> _Clients = new List<TcpClient>();
-        internal List<NetworkStream> Streams = new List<NetworkStream>();
+        internal List<NetworkStream> _Streams = new List<NetworkStream>();
 
 
         internal Message MOTD { get; set; }
 
-        public ServerEngine()
+        public ServerEngine(int port)
         {
-            _Server = TcpListener.Create(5813);
+            _Server = TcpListener.Create(port);
         }
 
         public async Task StartAsync()
@@ -39,15 +39,10 @@ namespace ChatApp
 
         public async Task AcceptPendingConnectionsAsync()
         {
-            //Console.WriteLine("Accepting new connections..."); //debugging thingy
             if (_Server.Pending())
             {
                 _Clients.Add(await _Server.AcceptTcpClientAsync());
-                Console.WriteLine($"Somebody appeared! Oh it's a newcomer!".PadLeft(Console.WindowWidth));
-                if (OnClientConnected != null)
-                {
-                    await OnClientConnected();
-                }
+                OnClientConnected?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -91,9 +86,9 @@ namespace ChatApp
                         string[] infoPacket = await ReceiveInfoPacketAsync(client.GetStream());
                         int messageLength = Convert.ToInt32(infoPacket[1]);
                         byte[] data = new byte[messageLength];
-                        int ReceivedDataLength = await stream.ReadAsync(data, 0, data.Length);
-                        Message ReceivedMessage = new Message(Encoding.UTF8.GetString(data, 0, ReceivedDataLength), infoPacket[0]);
-                        await OnMessageReceived(ReceivedMessage);
+                        int receivedDataLength = await stream.ReadAsync(data, 0, data.Length);
+                        Message receivedMessage = new Message(Encoding.UTF8.GetString(data, 0, receivedDataLength), infoPacket[0]);
+                        OnMessageReceived?.Invoke(this, receivedMessage);
                     }
                 }
                 //foreach (NetworkStream stream in Streams)
@@ -118,14 +113,6 @@ namespace ChatApp
             await stream.ReadAsync(receivedBytes, 0, 40);
             string receivedMessage = Encoding.UTF8.GetString(receivedBytes);
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
-        }
-
-        public async Task DisplayMessage(Message msg)
-        {
-            if (msg.Author.UserName != Console.Title)
-            {
-                Console.WriteLine($"{msg.Author.UserName}: {msg.Content}");
-            }
         }
     }
 }
