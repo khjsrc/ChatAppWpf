@@ -1,0 +1,9 @@
+﻿Current status: Clients are able to connect to the Server, send messages and receive messages from the Server.
+0. User authentication and where and how to store their credentials.
+1. Remove clients from clients list by invoking an EventHandler or by a method that will call the EventHandler in the end? The (bad or good?) part of invoking the EventHandler is it'll have to have a method subscribed to it from the same class, i.e. the Event will never be null.
+2. Broadcast messages received by the server side to all other clients.
+3. A better way of distinguishing clients from each other.
+4. DO NOT USE Thread.Sleep() in async methods.
+5. User and Message classes are not finished, but I don't know what to do with them yet.
+6. Make everything fancy and user-friendly.
+7. I bet there's more...

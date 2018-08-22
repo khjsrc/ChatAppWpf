@@ -31,19 +31,21 @@ namespace ChatAppWpf
             this.Close();
         }
 
+        #region shit code for tests
         private async void ButtonConnectToServer_OnClick(object sender, RoutedEventArgs e)
         {
             ClientEngine client = ClientEngine.Client;
-            await client.Connect(new IPAddress(new byte[] {127, 0, 0, 1}), 5813);
+            client.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} sent a message: {args.Content}"); };
+            await client.Connect(new IPAddress(new byte[] { 127, 0, 0, 1 }), 5813);
         }
 
         private async void StartServerButton_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Starting the server side...");
-            ServerEngine engine = new ServerEngine(5813);
-            engine.OnClientConnected += (o, args) => { MessageBox.Show("Somebody has just connected to the server!"); };
-            engine.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); };
-            await engine.StartAsync();
+            //MessageBox.Show("Starting the server side...");
+            ServerEngine server = ServerEngine.Server;
+            server.OnClientConnected += (o, args) => { MessageBox.Show("Somebody has just connected to the server!"); };
+            server.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); };
+            await server.StartAsync(5813);
         }
 
         private async void SendMessageButton_OnClick(object sender, RoutedEventArgs e)
@@ -51,5 +53,12 @@ namespace ChatAppWpf
             ClientEngine client = ClientEngine.Client;
             await client.SendMessageAsync(new Message("testing string", "Kappa"));
         }
+
+        private async void SendBroadcastButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ServerEngine server = ServerEngine.Server;
+            await server.BroadcastAsync(new Message("this is broadcast message", "ServerName"));
+        }
+        #endregion
     }
 }

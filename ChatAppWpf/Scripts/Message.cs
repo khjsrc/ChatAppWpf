@@ -14,6 +14,7 @@ namespace ChatApp
         public string Content { get; set; }
         public ulong ID { get; set; }
         public User Author { get; set; }
+        public DateTime TimeOfCreation { get; set; }
 
         //public Message(string _message)
         //{
@@ -26,6 +27,7 @@ namespace ChatApp
             ID = MessagesAmount++;
             Content = message;
             Author = new User(username);
+            TimeOfCreation = DateTime.Now;
         }
 
         public byte[] GetBytes()

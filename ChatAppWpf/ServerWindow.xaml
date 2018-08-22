@@ -31,8 +31,8 @@
         <Button x:Name="SendMessageButton" Margin="146,0,0,0" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="SendMessageButton_OnClick">
             Send Message
         </Button>
-        <Button x:Name="Placeholder" Margin="64,0,0,20" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-            Button-placeholder 
+        <Button x:Name="SendBroadcastButton" Margin="64,0,0,20" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="SendBroadcastButton_OnClick">
+            Send Broadcast
         </Button>
         <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonExit" Height="30" Width="100" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Exit" FontSize="16" Click="ButtonExit_OnClick"></Button>
     </Grid>

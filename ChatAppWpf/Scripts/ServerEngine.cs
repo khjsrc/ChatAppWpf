@@ -14,21 +14,39 @@ namespace ChatApp
         public event EventHandler<Message> OnMessageReceived;
         public event EventHandler OnClientConnected;
 
-        internal TcpListener Server;
-        internal List<TcpClient> Clients = new List<TcpClient>();
-        internal List<NetworkStream> Streams = new List<NetworkStream>();
+        private static List<TcpClient> _clients = new List<TcpClient>();
+        private static List<NetworkStream> _streams = new List<NetworkStream>();
 
+        private static ServerEngine _serverEngine;
+        private static TcpListener _server;
+        private static readonly object padlock = new object();
 
         internal Message MOTD { get; set; }
 
-        public ServerEngine(int port)
+        public ServerEngine()
         {
-            Server = TcpListener.Create(port);
+
         }
 
-        public async Task StartAsync()
+        public static ServerEngine Server
         {
-            Server.Start();
+            get
+            {
+                lock (padlock)
+                {
+                    if(_serverEngine == null)
+                    {
+                        _serverEngine = new ServerEngine();
+                    }
+                    return _serverEngine;
+                }
+            }
+        }
+
+        public async Task StartAsync(int port)
+        {
+            _server = TcpListener.Create(port);
+            _server.Start();
             while (true)
             {
                 await AcceptPendingConnectionsAsync();
@@ -39,9 +57,9 @@ namespace ChatApp
 
         public async Task AcceptPendingConnectionsAsync()
         {
-            if (Server.Pending())
+            if (_server.Pending())
             {
-                Clients.Add(await Server.AcceptTcpClientAsync());
+                _clients.Add(await _server.AcceptTcpClientAsync());
                 OnClientConnected?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -49,14 +67,14 @@ namespace ChatApp
         public async Task GreetNewcomerAsync()
         {
             var motdBytes = MOTD.GetBytes();
-            var client = Clients.Last();
+            var client = _clients.Last();
             await client.GetStream().WriteAsync(motdBytes, 0, motdBytes.Length);
         }
 
         public async Task BroadcastAsync(Message msg)
         {
             var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
-            foreach (var client in Clients)
+            foreach (var client in _clients)
             {
                 NetworkStream stream = client.GetStream();
                 await SendInfoPacketAsync(client, msg);
@@ -74,15 +92,13 @@ namespace ChatApp
 
         public async Task ReceiveMessageAsync()
         {
-            //Console.WriteLine($"Connected clients: {_Clients.Count}"); //debugging thingy
-            if (Clients.Count > 0)
+            if (_clients.Count > 0)
             {
-                foreach (var client in Clients)
+                foreach (var client in _clients)
                 {
                     NetworkStream stream = client.GetStream();
                     if (client.GetStream().DataAvailable)
                     {
-                        //Console.WriteLine($"Trying to receive messages from {client.ToString()}..."); //debugging thingy
                         string[] infoPacket = await ReceiveInfoPacketAsync(client.GetStream());
                         int messageLength = Convert.ToInt32(infoPacket[1]);
                         byte[] data = new byte[messageLength];
