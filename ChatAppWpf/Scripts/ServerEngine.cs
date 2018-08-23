@@ -12,7 +12,8 @@ namespace ChatApp
     class ServerEngine
     {
         public event EventHandler<Message> OnMessageReceived;
-        public event EventHandler OnClientConnected;
+        public event EventHandler<TcpClient> OnClientConnected;
+        public event EventHandler<TcpClient> OnClientDisconnected;
 
         private static List<TcpClient> _clients = new List<TcpClient>();
         private static List<NetworkStream> _streams = new List<NetworkStream>();
@@ -50,6 +51,7 @@ namespace ChatApp
             while (true)
             {
                 await AcceptPendingConnectionsAsync();
+                //Receive "heartbeat" packets from clients here?
                 await ReceiveMessageAsync();
                 await Task.Delay(200);
             }
@@ -57,10 +59,11 @@ namespace ChatApp
 
         public async Task AcceptPendingConnectionsAsync()
         {
-            if (_server.Pending())
+            while (_server.Pending())
             {
-                _clients.Add(await _server.AcceptTcpClientAsync());
-                OnClientConnected?.Invoke(this, EventArgs.Empty);
+                var client = await _server.AcceptTcpClientAsync();
+                _clients.Add(client);
+                OnClientConnected?.Invoke(this, client);
             }
         }
 
@@ -74,11 +77,20 @@ namespace ChatApp
         public async Task BroadcastAsync(Message msg)
         {
             var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
-            foreach (var client in _clients)
+            if (_clients.Count > 0)
             {
-                NetworkStream stream = client.GetStream();
-                await SendInfoPacketAsync(client, msg);
-                await client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
+                List<TcpClient> badClients = new List<TcpClient>();
+                foreach (var client in _clients)
+                {
+                    try
+                    {
+                        NetworkStream stream = client.GetStream();
+                        await SendInfoPacketAsync(client, msg);
+                        await client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
+                    }
+                    catch (Exception) { badClients.Add(client); }
+                }
+                _clients = _clients.Except(badClients).ToList();
             }
         }
 
@@ -86,7 +98,7 @@ namespace ChatApp
         {
             byte[] infoBytes = new byte[40]; //32 bytes for nickname and other 8 for additional stuff.
             Encoding.UTF8.GetBytes(msg.Author.UserName).CopyTo(infoBytes, 0);
-            Encoding.UTF8.GetBytes(msg.Content.Length.ToString()).CopyTo(infoBytes, 32); //first of last 8 bytes is message length.
+            Encoding.UTF8.GetBytes(msg.Content.Length.ToString()).CopyTo(infoBytes, 32); //first few bites of the last 8 bytes is message length.
             await client.GetStream().WriteAsync(infoBytes, 0, 40);
         }
 

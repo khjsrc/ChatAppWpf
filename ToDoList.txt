@@ -1,6 +1,10 @@
 ﻿Current status: Clients are able to connect to the Server, send messages and receive messages from the Server.
+
+Things that I need to do in future:
 0. User authentication and where and how to store their credentials.
 1. Remove clients from clients list by invoking an EventHandler or by a method that will call the EventHandler in the end? The (bad or good?) part of invoking the EventHandler is it'll have to have a method subscribed to it from the same class, i.e. the Event will never be null.
+	1.1. Add "heartbeat" packets that will be sending by every client to the server to show that they're still connected and when X amount of these packets are lost, disconnect the client.
+	1.2. Check if the data sent by the server can reach a client from the list of clients. If not - remove it from the list. (Try/Catch/Finally?)
 2. Broadcast messages received by the server side to all other clients.
 3. A better way of distinguishing clients from each other.
 4. DO NOT USE Thread.Sleep() in async methods.
