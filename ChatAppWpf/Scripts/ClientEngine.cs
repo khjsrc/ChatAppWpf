@@ -40,14 +40,14 @@ namespace ChatApp
         }
 
         #region Task methods
-        public async Task Connect(IPAddress address, int port)
+        public async Task Connect(IPAddress address, int port) //tries to connect to the specified IP and port every 1000ms until it's connected. Probably, need to create a workaround for cases when there's no connection to the server.
         {
             while (!_serverObject.Connected)
             {
                 await _serverObject.ConnectAsync(address, port);
                 await Task.Delay(1000);
             }
-            await ReceiveMessageAsync();
+            //await ReceiveMessageAsync(); //Prolly, needed to receive a greeting message? Is it even neccessary?
             OnConnectedToServer?.Invoke(this, EventArgs.Empty);
         }
 
@@ -90,6 +90,11 @@ namespace ChatApp
             await stream.ReadAsync(receivedBytes, 0, 40);
             string receivedMessage = Encoding.UTF8.GetString(receivedBytes);
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
+        }
+
+        private async Task SendHeartbeat()
+        {
+
         }
 
         //private async Task DisplayMessage(Message msg)

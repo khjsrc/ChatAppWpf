@@ -15,8 +15,8 @@ namespace ChatApp
         public event EventHandler<TcpClient> OnClientConnected;
         public event EventHandler<TcpClient> OnClientDisconnected;
 
-        private static List<TcpClient> _clients = new List<TcpClient>();
-        private static List<NetworkStream> _streams = new List<NetworkStream>();
+        private static List<TcpClient> _clientObjects = new List<TcpClient>();
+        private static List<NetworkStream> _clientStreams = new List<NetworkStream>(); //Pretty useless.
 
         private static ServerEngine _serverEngine;
         private static TcpListener _server;
@@ -62,7 +62,7 @@ namespace ChatApp
             while (_server.Pending())
             {
                 var client = await _server.AcceptTcpClientAsync();
-                _clients.Add(client);
+                _clientObjects.Add(client);
                 OnClientConnected?.Invoke(this, client);
             }
         }
@@ -70,17 +70,17 @@ namespace ChatApp
         public async Task GreetNewcomerAsync()
         {
             var motdBytes = MOTD.GetBytes();
-            var client = _clients.Last();
+            var client = _clientObjects.Last();
             await client.GetStream().WriteAsync(motdBytes, 0, motdBytes.Length);
         }
 
         public async Task BroadcastAsync(Message msg)
         {
             var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
-            if (_clients.Count > 0)
+            if (_clientObjects.Count > 0)
             {
                 List<TcpClient> badClients = new List<TcpClient>();
-                foreach (var client in _clients)
+                foreach (var client in _clientObjects)
                 {
                     try
                     {
@@ -90,7 +90,7 @@ namespace ChatApp
                     }
                     catch (Exception) { badClients.Add(client); }
                 }
-                _clients = _clients.Except(badClients).ToList();
+                _clientObjects = _clientObjects.Except(badClients).ToList();
             }
         }
 
@@ -104,9 +104,9 @@ namespace ChatApp
 
         public async Task ReceiveMessageAsync()
         {
-            if (_clients.Count > 0)
+            if (_clientObjects.Count > 0)
             {
-                foreach (var client in _clients)
+                foreach (var client in _clientObjects)
                 {
                     NetworkStream stream = client.GetStream();
                     if (client.GetStream().DataAvailable)
