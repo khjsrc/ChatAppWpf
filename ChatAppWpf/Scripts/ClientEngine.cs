@@ -94,7 +94,7 @@ namespace ChatApp
 
         private async Task SendHeartbeat()
         {
-
+            //useful code here
         }
 
         //private async Task DisplayMessage(Message msg)

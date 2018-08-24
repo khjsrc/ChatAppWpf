@@ -135,6 +135,11 @@ namespace ChatApp
             }
         }
 
+        private async Task ReceiveHeartbeat()
+        {
+            //useful code here
+        }
+
         public async Task<string[]> ReceiveInfoPacketAsync(NetworkStream stream)
         {
             byte[] receivedBytes = new byte[40];
