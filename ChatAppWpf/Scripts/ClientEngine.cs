@@ -18,7 +18,7 @@ namespace ChatApp
         private static TcpClient _serverObject;
         private static readonly object Padlock = new object();
 
-        ClientEngine()
+        private ClientEngine()
         {
 
         }
@@ -47,7 +47,7 @@ namespace ChatApp
                 await _serverObject.ConnectAsync(address, port);
                 await Task.Delay(1000);
             }
-            //await ReceiveMessageAsync(); //Prolly, needed to receive a greeting message? Is it even neccessary?
+            await ReceiveMessageAsync(); //Prolly, needed to receive a greeting message? Is it even neccessary?
             OnConnectedToServer?.Invoke(this, EventArgs.Empty);
         }
 
@@ -92,9 +92,10 @@ namespace ChatApp
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
         }
 
-        private async Task SendHeartbeat()
+        private async Task SendHeartbeatAsync()
         {
-            //useful code here
+            //useful code here?
+            _serverObject.GetStream().Write(new byte[] {1}, 0, 1);
         }
 
         //private async Task DisplayMessage(Message msg)

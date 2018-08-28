@@ -34,6 +34,8 @@ namespace ChatAppWpf
         #region shit code for tests
         private async void ButtonConnectToServer_OnClick(object sender, RoutedEventArgs e)
         {
+            StatusTextBlock.Text = "Client";
+
             ClientEngine client = ClientEngine.Client;
             client.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} sent a message: {args.Content}"); };
             await client.Connect(new IPAddress(new byte[] { 127, 0, 0, 1 }), 5813);
@@ -41,9 +43,14 @@ namespace ChatAppWpf
 
         private async void StartServerButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Starting the server side...");
+            StatusTextBlock.Text = "Server";
+
             ServerEngine server = ServerEngine.Server;
-            server.OnClientConnected += (o, args) => { MessageBox.Show("Somebody has just connected to the server!"); };
+            server.OnClientConnected += async (o, args) =>
+            {
+                await server.GreetNewcomerAsync();
+                MessageBox.Show("Somebody has just connected to the server!");
+            };
             server.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); };
             await server.StartAsync(5813);
         }

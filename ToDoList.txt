@@ -11,3 +11,4 @@ Things that I need to do in future:
 5. User and Message classes are not finished, but I don't know what to do with them yet.
 6. Make everything fancy and user-friendly.
 7. I bet there's more...
+8. Use Sockets instead of TcpClient/TcpListener?

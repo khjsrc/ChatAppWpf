@@ -14,6 +14,7 @@ namespace ChatApp
         public event EventHandler<Message> OnMessageReceived;
         public event EventHandler<TcpClient> OnClientConnected;
         public event EventHandler<TcpClient> OnClientDisconnected;
+        public event EventHandler<Exception> OnExceptionOccured;
 
         private static List<TcpClient> _clientObjects = new List<TcpClient>();
         private static List<NetworkStream> _clientStreams = new List<NetworkStream>(); //Pretty useless.
@@ -22,20 +23,20 @@ namespace ChatApp
         private static TcpListener _server;
         private static readonly object padlock = new object();
 
-        internal Message MOTD { get; set; }
+        internal Message MOTD = new Message("Hello there!", "Server");
 
-        public ServerEngine()
+        private ServerEngine()
         {
 
         }
-
+        
         public static ServerEngine Server
         {
             get
             {
                 lock (padlock)
                 {
-                    if(_serverEngine == null)
+                    if (_serverEngine == null)
                     {
                         _serverEngine = new ServerEngine();
                     }
@@ -51,7 +52,6 @@ namespace ChatApp
             while (true)
             {
                 await AcceptPendingConnectionsAsync();
-                //Receive "heartbeat" packets from clients here?
                 await ReceiveMessageAsync();
                 await Task.Delay(200);
             }
@@ -71,24 +71,28 @@ namespace ChatApp
         {
             var motdBytes = MOTD.GetBytes();
             var client = _clientObjects.Last();
+            await SendInfoPacketAsync(client, MOTD);
             await client.GetStream().WriteAsync(motdBytes, 0, motdBytes.Length);
         }
 
         public async Task BroadcastAsync(Message msg)
         {
-            var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
             if (_clientObjects.Count > 0)
             {
+                var msgBytes = Encoding.UTF8.GetBytes(msg.Content);
                 List<TcpClient> badClients = new List<TcpClient>();
                 foreach (var client in _clientObjects)
                 {
                     try
                     {
-                        NetworkStream stream = client.GetStream();
                         await SendInfoPacketAsync(client, msg);
                         await client.GetStream().WriteAsync(msgBytes, 0, msgBytes.Length);
                     }
-                    catch (Exception) { badClients.Add(client); }
+                    catch (Exception ex)
+                    {
+                        OnExceptionOccured?.Invoke(this, ex);
+                        badClients.Add(client);
+                    }
                 }
                 _clientObjects = _clientObjects.Except(badClients).ToList();
             }
@@ -106,19 +110,31 @@ namespace ChatApp
         {
             if (_clientObjects.Count > 0)
             {
+                List<TcpClient> badClients = new List<TcpClient>();
                 foreach (var client in _clientObjects)
                 {
-                    NetworkStream stream = client.GetStream();
-                    if (client.GetStream().DataAvailable)
+                    try
                     {
-                        string[] infoPacket = await ReceiveInfoPacketAsync(client.GetStream());
-                        int messageLength = Convert.ToInt32(infoPacket[1]);
-                        byte[] data = new byte[messageLength];
-                        int receivedDataLength = await stream.ReadAsync(data, 0, data.Length);
-                        Message receivedMessage = new Message(Encoding.UTF8.GetString(data, 0, receivedDataLength), infoPacket[0]);
-                        OnMessageReceived?.Invoke(this, receivedMessage);
+                        NetworkStream stream = client.GetStream();
+                        if (stream.DataAvailable)
+                        {
+                            string[] infoPacket = await ReceiveInfoPacketAsync(stream);
+                            int messageLength = Convert.ToInt32(infoPacket[1]);
+                            byte[] data = new byte[messageLength];
+                            int receivedDataLength = await stream.ReadAsync(data, 0, data.Length);
+                            Message receivedMessage = new Message(Encoding.UTF8.GetString(data, 0, receivedDataLength),
+                                infoPacket[0]);
+                            OnMessageReceived?.Invoke(this, receivedMessage);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OnExceptionOccured?.Invoke(this, ex);
+                        badClients.Add(client);
                     }
                 }
+
+                _clientObjects = _clientObjects.Except(badClients).ToList();
                 //foreach (NetworkStream stream in Streams)
                 //{
                 //    if (stream.DataAvailable)
@@ -135,11 +151,6 @@ namespace ChatApp
             }
         }
 
-        private async Task ReceiveHeartbeat()
-        {
-            //useful code here
-        }
-
         public async Task<string[]> ReceiveInfoPacketAsync(NetworkStream stream)
         {
             byte[] receivedBytes = new byte[40];
@@ -147,5 +158,21 @@ namespace ChatApp
             string receivedMessage = Encoding.UTF8.GetString(receivedBytes);
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
         }
+
+        /*private async Task ReceiveHeartbeatAsync() //need another port for this, so not gonna use it for now.
+        {
+            //useful code here?
+            List<TcpClient> badClients = new List<TcpClient>();
+            foreach (var client in _clientObjects)
+            {
+                if (client.GetStream().DataAvailable)
+                {
+                    byte[] heartbeat = new byte[1];
+                    await client.GetStream().ReadAsync(heartbeat, 0, 1);
+                    if (heartbeat[0] != 1) badClients.Add(client);
+                }
+            }
+            _clientObjects = _clientObjects.Except(badClients).ToList();
+        }*/
     }
 }
