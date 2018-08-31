@@ -91,6 +91,7 @@ namespace ChatApp
                     catch (Exception ex)
                     {
                         OnExceptionOccured?.Invoke(this, ex);
+                        OnClientDisconnected?.Invoke(this, client);
                         badClients.Add(client);
                     }
                 }
@@ -130,24 +131,12 @@ namespace ChatApp
                     catch (Exception ex)
                     {
                         OnExceptionOccured?.Invoke(this, ex);
+                        OnClientDisconnected?.Invoke(this, client);
                         badClients.Add(client);
                     }
                 }
 
                 _clientObjects = _clientObjects.Except(badClients).ToList();
-                //foreach (NetworkStream stream in Streams)
-                //{
-                //    if (stream.DataAvailable)
-                //    {
-                //        string[] infoPacket = await ReceiveInfoPacket(stream);
-                //        int messageLength = Convert.ToInt32(infoPacket[1]);
-                //        byte[] data = new byte[messageLength];
-                //        int ReceivedDataLength = stream.Read(data, 0, data.Length);
-                //        Message ReceivedMessage = new Message(Encoding.UTF8.GetString(data, 0, ReceivedDataLength), infoPacket[0]);
-                //        OnMessageReceived(ReceivedMessage);
-                //        await Task.Delay(1000);
-                //    }
-                //}
             }
         }
 

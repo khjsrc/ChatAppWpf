@@ -46,7 +46,11 @@ namespace ChatAppWpf
         private void ButtonLogIn_Click(object sender, RoutedEventArgs e)
         {
             string login = LoginTextBox.Text;
-            var password = UserPassword.Password;
+            var password = UserPassword.Password.GetHashCode();
+
+            /*Send a packet with authentication info to the server (username, password's hash code or any other secure string)
+             *and check if the info matches with the one in the server's database.
+             */
 
             //send the login-password pair to the server? then receive the answer and if the password matches the login, open the client window
 

@@ -91,20 +91,6 @@ namespace ChatApp
             string receivedMessage = Encoding.UTF8.GetString(receivedBytes);
             return new string[] { receivedMessage.Substring(0, 32).Trim(' ', '\0'), receivedMessage.Substring(32).Trim(' ', '\0') };
         }
-
-        private async Task SendHeartbeatAsync()
-        {
-            //useful code here?
-            _serverObject.GetStream().Write(new byte[] {1}, 0, 1);
-        }
-
-        //private async Task DisplayMessage(Message msg)
-        //{
-        //    if (msg.Author.UserName != Console.Title)
-        //    {
-        //        Console.WriteLine($"{msg.Author.UserName}: {msg.Content}");
-        //    }
-        //}
         #endregion
     }
 }

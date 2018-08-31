@@ -12,3 +12,4 @@ Things that I need to do in future:
 6. Make everything fancy and user-friendly.
 7. I bet there's more...
 8. Use Sockets instead of TcpClient/TcpListener?
+9. Use another port to send authentication data from client?

@@ -22,7 +22,7 @@
                 </Path.Fill>
             </Path>
         </Button>-->
-        <TextBlock x:Name="StatusTextBlock" VerticalAlignment="Top" Height="30"></TextBlock>
+        <TextBlock x:Name="StatusTextBlock" VerticalAlignment="Top" Height="30" FontSize="20" Foreground="Bisque"></TextBlock>
         <Button  x:Name="ButtonConnectToServer" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="Transparent" Click="ButtonConnectToServer_OnClick">
             Connect to server 127.0.0.1
         </Button>
