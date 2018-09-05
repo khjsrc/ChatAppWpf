@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,8 @@ namespace ChatAppWpf
         {
             string login = LoginTextBox.Text;
             var password = UserPassword.Password.GetHashCode();
+            ConfigurationManager.AppSettings.Get("ServerAddress");
+            ConfigurationManager.AppSettings.Get("ServerPort");
 
             /*Send a packet with authentication info to the server (username, password's hash code or any other secure string)
              *and check if the info matches with the one in the server's database.

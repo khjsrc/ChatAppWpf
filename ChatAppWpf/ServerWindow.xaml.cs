@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -38,7 +39,19 @@ namespace ChatAppWpf
 
             ClientEngine client = ClientEngine.Client;
             client.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} sent a message: {args.Content}"); };
-            await client.Connect(new IPAddress(new byte[] { 127, 0, 0, 1 }), 5813);
+
+            IPAddress ip = IPAddress.None;
+            string address = ConfigurationManager.AppSettings.Get("ServerAddress");
+            if (!IPAddress.TryParse(address, out ip))
+            {
+                MessageBox.Show(
+                    "You should specify IP address of the server in App.congif file before launching the client.");
+            }
+            else
+            {
+                await client.Connect(new IPAddress((ip,
+                    Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
+            }
         }
 
         private async void StartServerButton_OnClick(object sender, RoutedEventArgs e)
