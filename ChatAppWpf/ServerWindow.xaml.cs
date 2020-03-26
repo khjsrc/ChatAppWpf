@@ -49,8 +49,7 @@ namespace ChatAppWpf
             }
             else
             {
-                await client.Connect(new IPAddress((ip,
-                    Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
+                await client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
             }
         }
 
@@ -65,7 +64,7 @@ namespace ChatAppWpf
                 MessageBox.Show("Somebody has just connected to the server!");
             };
             server.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); };
-            await server.StartAsync(5813);
+            await server.StartAsync(Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
         }
 
         private async void SendMessageButton_OnClick(object sender, RoutedEventArgs e)

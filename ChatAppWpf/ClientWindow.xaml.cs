@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChatApp;
 
 namespace ChatAppWpf
 {
@@ -39,35 +40,24 @@ namespace ChatAppWpf
             }
         }
 
-        private void TextBoxMessage_KeyDown(object sender, KeyEventArgs e)
+        private async void TextBoxMessage_KeyDown(object sender, KeyEventArgs e)
         {
+            ClientEngine client = ClientEngine.Client;
+
             if (e.Key == Key.Enter && TextBoxMessage.Text.Length > 0)
             {
+                string message = string.Empty;
                 if (TextBoxMessage.Text.Trim(' ').Length == 0)
                 {
                     TextBoxMessage.Clear();
                 }
                 else
                 {
-                    string message = string.Empty;
-                    int lastIndexOfSpace, previousIndexOfSpace = 0;
-                    for (int i = 0; i < TextBoxMessage.Text.Length / 50; i++)
-                    {
-                        try
-                        {
-                            lastIndexOfSpace = TextBoxMessage.Text.ToString().LastIndexOf(' ', previousIndexOfSpace + 1, 50);
-                            message += TextBoxMessage.Text.Substring(previousIndexOfSpace, lastIndexOfSpace - message.Length) + '\n';
-                            previousIndexOfSpace = lastIndexOfSpace;
-                        }
-                        catch (Exception)
-                        {
-                            message = TextBoxMessage.Text;
-                        }
-                    }
-                    ChatLog.Content += message + '\n';
+                    message = TextBoxMessage.Text;
                     ChatLog.ScrollToBottom();
                     TextBoxMessage.Clear();
                 }
+                await client.SendMessageAsync(new Message(message, "ClientID"));
             }
         }
 

@@ -42,6 +42,12 @@
                 <Button Name="ButtonExit" Style="{StaticResource ButtonDefaultStyle}" Grid.Column="1" Margin="16" FontSize="15" Click="ButtonExit_Click">Exit</Button>
             </Grid>
         </Grid>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <TextBlock Style="{StaticResource CustomTextBlockStyle}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                First timer? Then register 
+                <Hyperlink x:Name="RegistrationHyperText" Click="RegistrationHyperText_Click">here.</Hyperlink>
+            </TextBlock>
+        </Grid>
         <TextBlock Style="{StaticResource CustomTextBlockStyle}" Grid.Row="0" Grid.Column="1" x:Name="TextBlockAnnouncement" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="App name here" FontSize="32"/>
         <!--<Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonServer" Height="25" Width="120" Margin="30,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Server" Click="ButtonServer_Click" FontSize="14"/>
         <Button Style="{StaticResource ButtonDefaultStyle}" x:Name="ButtonClient" Height="25" Width="120" Margin="0,0,30,30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Client" Click="ButtonClient_Click" FontSize="14"/>-->

@@ -40,7 +40,7 @@ namespace ChatApp
         }
 
         #region Task methods
-        public async Task Connect(IPAddress address, int port) //tries to connect to the specified IP and port every 1000ms until it's connected. Probably, need to create a workaround for cases when there's no connection to the server.
+        public async Task Connect(IPAddress address, int port) //tries to connect to the specified IP and port every 1000ms until it's connected. Beware of LOOPS
         {
             while (!_serverObject.Connected)
             {
