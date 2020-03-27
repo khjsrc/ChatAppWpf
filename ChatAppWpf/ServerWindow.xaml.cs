@@ -63,7 +63,10 @@ namespace ChatAppWpf
                 await server.GreetNewcomerAsync();
                 MessageBox.Show("Somebody has just connected to the server!");
             };
-            server.OnMessageReceived += (o, args) => { MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); };
+            server.OnMessageReceived += async (o, args) => {
+                await server.BroadcastAsync(args);
+                //MessageBox.Show($"{args.Author.UserName} said: {args.Content}"); 
+            };
             await server.StartAsync(Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
         }
 

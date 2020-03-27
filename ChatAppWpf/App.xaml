@@ -405,14 +405,14 @@
         <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MaxHeight="18"/>
-                    <RowDefinition Height="0.0001*"/>
-                    <RowDefinition Height="*" MaxHeight="18"/>
+                    <RowDefinition Height="*" MaxHeight="0"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" MaxHeight="0"/>
                 </Grid.RowDefinitions>
-                <RepeatButton Grid.Row="0"
+                <!--<RepeatButton Grid.Row="0"
                               Style="{StaticResource ScrollBarLineButton}"
                               Command="ScrollBar.LineUpCommand">
-                </RepeatButton>
+                </RepeatButton>-->
                 <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
                     <Track.DecreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}"
@@ -443,11 +443,11 @@
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}"/>
                     </Track.IncreaseRepeatButton>
                 </Track>
-                <RepeatButton Grid.Row="2"
+                <!--<RepeatButton Grid.Row="2"
                               Style="{StaticResource ScrollBarLineButton}"
                               Height="Auto"
                               Command="ScrollBar.LineDownCommand">
-                </RepeatButton>
+                </RepeatButton>-->
             </Grid>
         </ControlTemplate>
 
@@ -458,7 +458,7 @@
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Vertical">
-                    <Setter Property="Width" Value="18"/>
+                    <Setter Property="Width" Value="12"/>
                     <Setter Property="Height" Value="Auto"/>
                     <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
                 </Trigger>

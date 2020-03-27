@@ -63,28 +63,36 @@ namespace ChatAppWpf
             win.Left = this.Left;
             win.Top = this.Top;
             win.Show();
+            win.Username = login;
             this.Close();
 
-            ClientEngine client = ClientEngine.Client;
-            client.OnMessageReceived += (o, args) => {
-                TextBlock msg = new TextBlock();
-                msg.Text = $"{args.Author.UserName}: {args.Content}";
-                msg.Style = Resources["ChatTextBlockStyle"] as Style;
-                (win.ChatLog.Content as Grid).Children.Add(msg);
-                win.ChatLog.ScrollToEnd(); 
-            };//MessageBox.Show($"{args.Author.UserName} sent a message: {args.Content}"); };
+            //ClientEngine client = ClientEngine.Client;
+            //client.OnMessageReceived += (o, args) => {
+            //    Grid grid = win.ChatLog.Content as Grid;
+            //    TextBlock msg = new TextBlock
+            //    {
+            //        Text = $"({args.TimeOfCreation:hh:MM:ss}){args.Author.UserName}: {args.Content}",
+            //        Style = Application.Current.Resources["ChatTextBlockStyle"] as Style
+            //    };
 
-            IPAddress ip = IPAddress.None;
-            string address = ConfigurationManager.AppSettings.Get("ServerAddress");
-            if (!IPAddress.TryParse(address, out ip))
-            {
-                MessageBox.Show(
-                    "You should specify IP address of the server in App.congif file before launching the client.");
-            }
-            else
-            {
-                await client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
-            }
+            //    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            //    Grid.SetRow(msg, grid.RowDefinitions.Count - 1);
+            //    grid.Children.Add(msg);
+
+            //    win.ChatLog.ScrollToEnd();
+            //};
+
+            //IPAddress ip = IPAddress.None;
+            //string address = ConfigurationManager.AppSettings.Get("ServerAddress");
+            //if (!IPAddress.TryParse(address, out ip))
+            //{
+            //    MessageBox.Show(
+            //        "You should specify IP address of the server in App.congif file before launching the client.");
+            //}
+            //else
+            //{
+            //    await client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
+            //}
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
