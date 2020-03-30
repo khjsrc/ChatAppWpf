@@ -65,34 +65,6 @@ namespace ChatAppWpf
             win.Show();
             win.Username = login;
             this.Close();
-
-            //ClientEngine client = ClientEngine.Client;
-            //client.OnMessageReceived += (o, args) => {
-            //    Grid grid = win.ChatLog.Content as Grid;
-            //    TextBlock msg = new TextBlock
-            //    {
-            //        Text = $"({args.TimeOfCreation:hh:MM:ss}){args.Author.UserName}: {args.Content}",
-            //        Style = Application.Current.Resources["ChatTextBlockStyle"] as Style
-            //    };
-
-            //    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            //    Grid.SetRow(msg, grid.RowDefinitions.Count - 1);
-            //    grid.Children.Add(msg);
-
-            //    win.ChatLog.ScrollToEnd();
-            //};
-
-            //IPAddress ip = IPAddress.None;
-            //string address = ConfigurationManager.AppSettings.Get("ServerAddress");
-            //if (!IPAddress.TryParse(address, out ip))
-            //{
-            //    MessageBox.Show(
-            //        "You should specify IP address of the server in App.congif file before launching the client.");
-            //}
-            //else
-            //{
-            //    await client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
-            //}
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)

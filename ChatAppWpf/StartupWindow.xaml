@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Height="360" Width="525" 
         Style="{StaticResource CustomWindowStyle}"
-        Template="{StaticResource WindowBorderControlTemplate}">
+        Template="{StaticResource WindowBorderControlTemplateUnresizeable}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"></RowDefinition>
@@ -45,7 +45,7 @@
         <Grid Grid.Row="2" Grid.Column="1">
             <TextBlock Style="{StaticResource CustomTextBlockStyle}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
                 First timer? Then register 
-                <Hyperlink x:Name="RegistrationHyperText" Click="RegistrationHyperText_Click">here.</Hyperlink>
+                <Hyperlink x:Name="RegistrationHyperText" Click="RegistrationHyperText_Click" Foreground="IndianRed">here.</Hyperlink>
             </TextBlock>
         </Grid>
         <TextBlock Style="{StaticResource CustomTextBlockStyle}" Grid.Row="0" Grid.Column="1" x:Name="TextBlockAnnouncement" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="App name here" FontSize="32"/>

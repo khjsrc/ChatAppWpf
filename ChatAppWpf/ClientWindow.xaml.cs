@@ -45,15 +45,23 @@ namespace ChatAppWpf
             ClientEngine client = ClientEngine.Client;
             client.OnMessageReceived += (o, args) => {
                 Grid grid = ChatLog.Content as Grid;
-                TextBlock msg = new TextBlock
+                TextBlock msgText = new TextBlock
                 {
-                    Text = $"({args.TimeOfCreation:hh:MM:ss}){args.Author.UserName}: {args.Content}",
+                    Text = $"{args.Content}",
+                    Style = Application.Current.Resources["ChatTextBlockStyle"] as Style
+                };
+                TextBlock msgInfo = new TextBlock
+                {
+                    Text = $"({args.TimeOfCreation:hh: mm: ss}){ args.Author.UserName}: ",
                     Style = Application.Current.Resources["ChatTextBlockStyle"] as Style
                 };
 
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                Grid.SetRow(msg, grid.RowDefinitions.Count - 1);
-                grid.Children.Add(msg);
+                Grid.SetRow(msgInfo, grid.RowDefinitions.Count - 1);
+                Grid.SetColumn(msgInfo, 0);
+                Grid.SetRow(msgText, grid.RowDefinitions.Count - 1);
+                Grid.SetColumn(msgText, 0);
+                grid.Children.Add(msgText);
 
                 ChatLog.ScrollToEnd();
             };
@@ -67,7 +75,7 @@ namespace ChatAppWpf
             }
             else
             {
-                client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
+                //client.Connect(ip, Convert.ToInt32(ConfigurationManager.AppSettings.Get("ServerPort")));
             }
         }
 
@@ -75,8 +83,10 @@ namespace ChatAppWpf
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Style = Resources["ChatTextBlockStyle"] as Style;
-            textBlock.Text = "testing dynamic grid with chat messages";
-            ChatGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            textBlock.Text = new Random().Next(0, 999999).ToString();
+            ChatGrid.RowDefinitions.Add(new RowDefinition() { 
+                Height = GridLength.Auto 
+            });
             //ChatGrid.RowDefinitions.Count;
             Grid.SetRow(textBlock, ChatGrid.RowDefinitions.Count - 1);
             ChatGrid.Children.Add(textBlock);
